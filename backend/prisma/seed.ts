@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { seedAdminUser } from './seeds/admin-user.seed.js';
+import { seedEditors } from './seeds/editors.seed';
+import { seedReporters } from './seeds/reporters.seed';
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,8 @@ async function main() {
 
   try {
     // Run all seed functions in order
-    await seedAdminUser();
+    await seedReporters();
+    await seedEditors();
 
     console.log('✅ Database seeding completed successfully!');
   } catch (error) {
