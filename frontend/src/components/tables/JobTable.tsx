@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 import { JobStatusBadge } from '@/components/badges/JobStatusBadge';
 import { EmptyState } from '@/components/ui/Empty';
@@ -17,6 +18,8 @@ function formatIDR(amount: number) {
 }
 
 export function JobTable({ jobs, isLoading }: JobTableProps) {
+  const router = useRouter();
+
   if (isLoading) {
     return <TableSkeleton columns={6} rows={5} />;
   }
@@ -40,12 +43,12 @@ export function JobTable({ jobs, isLoading }: JobTableProps) {
         </thead>
         <tbody className="divide-y">
           {jobs.map((job) => (
-            <tr key={job.id} className="hover:bg-muted/30">
-              <td className="px-4 py-3">
-                <Link href={`/jobs/${job.id}`} className="font-medium hover:underline">
-                  {job.caseName}
-                </Link>
-              </td>
+            <tr 
+              key={job.id} 
+              onClick={() => router.push(`/jobs/${job.id}`)} 
+              className="hover:bg-muted/30 cursor-pointer select-none"
+            >
+              <td className="px-4 py-3">{job.caseName}</td>
               <td className="px-4 py-3">{job.duration} min</td>
               <td className="px-4 py-3">
                 {job.location}

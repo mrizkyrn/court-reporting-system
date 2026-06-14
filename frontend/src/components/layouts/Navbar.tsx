@@ -12,7 +12,7 @@ export function Navbar() {
 
   // Main navigation items (Home, About, Contact)
   const mainNavItems = [
-    { label: 'Jobs', href: '/jobs', icon: <Home className="h-4 w-4" /> },
+    { label: 'Jobs', href: '/', icon: <Home className="h-4 w-4" /> },
     { label: 'Reporters', href: '/reporters', icon: <Info className="h-4 w-4" /> },
     { label: 'Editors', href: '/editors', icon: <Mail className="h-4 w-4" /> },
   ];

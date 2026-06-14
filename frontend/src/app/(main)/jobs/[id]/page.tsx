@@ -1,6 +1,7 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
+import { useParams, useRouter } from 'next/navigation';
 
 import { JobStatusBadge } from '@/components/badges/JobStatusBadge';
 import { PaymentSummaryCard } from '@/components/cards/PaymentSummaryCard';
@@ -217,6 +218,7 @@ function StatusTimeline({ current }: { current: JobStatus }) {
 
 export default function JobDetailPage() {
   const { id } = useParams<{ id: string }>();
+  const router = useRouter();
   const { data, isLoading } = useJob(id);
 
   if (isLoading) {
@@ -238,15 +240,25 @@ export default function JobDetailPage() {
 
   return (
     <Container className="space-y-8 py-8">
-      {/* Header */}
       <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold">{job.caseName}</h1>
-          <p className="text-muted-foreground text-sm">
-            {job.duration} min • {job.location}
-            {job.city ? ` (${job.city})` : ''}
-          </p>
+        <div className="flex items-center gap-6">
+          <button
+            onClick={() => router.back()}
+            className="text-muted-foreground hover:text-foreground flex items-center gap-2 text-sm font-medium transition-colors"
+          >
+            <ArrowLeft className="h-8 w-8" />
+          </button>
+
+          {/* Header */}
+          <div>
+            <h1 className="text-2xl font-semibold">{job.caseName}</h1>
+            <p className="text-muted-foreground text-sm">
+              {job.duration} min • {job.location}
+              {job.city ? ` (${job.city})` : ''}
+            </p>
+          </div>
         </div>
+
         <JobStatusBadge status={job.status} />
       </div>
 
