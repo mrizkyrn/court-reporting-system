@@ -18,7 +18,7 @@ interface JobFormProps {
 
 export function JobForm({ onSuccess }: JobFormProps) {
   const form = useForm<CreateJobInput>({
-    resolver: zodResolver(createJobSchema) as any,
+    resolver: zodResolver(createJobSchema),
     defaultValues: {
       caseName: '',
       duration: undefined,

@@ -17,7 +17,7 @@ interface ReporterFormProps {
 
 export function ReporterForm({ onSuccess }: ReporterFormProps) {
   const form = useForm<CreateReporterInput>({
-    resolver: zodResolver(createReporterSchema) as any,
+    resolver: zodResolver(createReporterSchema),
     defaultValues: {
       name: '',
       city: '',
@@ -51,6 +51,7 @@ export function ReporterForm({ onSuccess }: ReporterFormProps) {
                   disabled={createReporter.isPending}
                   aria-invalid={!!fieldState.error}
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
               <FormMessage />
@@ -70,6 +71,7 @@ export function ReporterForm({ onSuccess }: ReporterFormProps) {
                   disabled={createReporter.isPending}
                   aria-invalid={!!fieldState.error}
                   {...field}
+                  value={field.value ?? ''}
                 />
               </FormControl>
               <FormMessage />
@@ -83,17 +85,25 @@ export function ReporterForm({ onSuccess }: ReporterFormProps) {
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Rate per Minute (IDR)</FormLabel>
+
               <FormControl>
                 <Input
                   type="number"
                   min={0}
                   disabled={createReporter.isPending}
                   aria-invalid={!!fieldState.error}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                   value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    field.onChange(value === '' ? '' : Number(value));
+                  }}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
                 />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -107,6 +117,7 @@ export function ReporterForm({ onSuccess }: ReporterFormProps) {
               <FormControl>
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={createReporter.isPending} />
               </FormControl>
+
               <FormLabel className="!mt-0">Available</FormLabel>
             </FormItem>
           )}

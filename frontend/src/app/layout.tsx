@@ -3,7 +3,6 @@ import { Montserrat } from 'next/font/google';
 
 import { Providers } from '@/lib/providers';
 import { cn } from '@/lib/utils';
-// @ts-expect-error Global CSS import handled by Next.js.
 import './globals.css';
 
 const montserrat = Montserrat({

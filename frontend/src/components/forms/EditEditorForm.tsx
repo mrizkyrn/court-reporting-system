@@ -18,7 +18,7 @@ interface EditEditorFormProps {
 
 export function EditEditorForm({ editor, onSuccess }: EditEditorFormProps) {
   const form = useForm<UpdateEditorInput>({
-    resolver: zodResolver(updateEditorSchema) as any,
+    resolver: zodResolver(updateEditorSchema),
     defaultValues: {
       name: editor.name,
       flatFee: editor.flatFee,
@@ -30,7 +30,15 @@ export function EditEditorForm({ editor, onSuccess }: EditEditorFormProps) {
 
   const onSubmit = useCallback(
     (data: UpdateEditorInput) => {
-      updateEditor.mutate({ id: editor.id, data }, { onSuccess });
+      updateEditor.mutate(
+        {
+          id: editor.id,
+          data,
+        },
+        {
+          onSuccess,
+        }
+      );
     },
     [updateEditor, editor.id, onSuccess]
   );
@@ -64,17 +72,25 @@ export function EditEditorForm({ editor, onSuccess }: EditEditorFormProps) {
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Flat Fee per Job (IDR)</FormLabel>
+
               <FormControl>
                 <Input
                   type="number"
                   min={0}
                   disabled={updateEditor.isPending}
                   aria-invalid={!!fieldState.error}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                   value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    field.onChange(value === '' ? '' : Number(value));
+                  }}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
                 />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}

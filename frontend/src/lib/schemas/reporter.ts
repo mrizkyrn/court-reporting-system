@@ -12,8 +12,8 @@ export const getReportersQuerySchema = z.object({
 export const createReporterSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must not exceed 100 characters'),
   city: z.string().min(1, 'City is required').max(100, 'City must not exceed 100 characters'),
-  available: z.boolean().default(true),
-  ratePerMin: z.coerce.number().int().positive('Rate must be greater than 0').default(2000),
+  available: z.boolean(),
+  ratePerMin: z.number().int().positive(),
 });
 
 export const updateReporterSchema = z.object({

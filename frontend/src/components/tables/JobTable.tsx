@@ -1,20 +1,15 @@
 'use client';
 
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import { JobStatusBadge } from '@/components/badges/JobStatusBadge';
-import { EmptyState } from '@/components/ui/Empty';
 import { TableSkeleton } from '@/components/tables/TableSkeleton';
+import { EmptyState } from '@/components/ui/Empty';
 import type { JobResponse } from '@/lib/types/job';
 
 interface JobTableProps {
   jobs: JobResponse[];
   isLoading: boolean;
-}
-
-function formatIDR(amount: number) {
-  return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(amount);
 }
 
 export function JobTable({ jobs, isLoading }: JobTableProps) {
@@ -43,9 +38,9 @@ export function JobTable({ jobs, isLoading }: JobTableProps) {
         </thead>
         <tbody className="divide-y">
           {jobs.map((job) => (
-            <tr 
-              key={job.id} 
-              onClick={() => router.push(`/jobs/${job.id}`)} 
+            <tr
+              key={job.id}
+              onClick={() => router.push(`/jobs/${job.id}`)}
               className="hover:bg-muted/30 cursor-pointer select-none"
             >
               <td className="px-4 py-3">{job.caseName}</td>

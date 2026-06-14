@@ -16,7 +16,7 @@ interface EditorFormProps {
 
 export function EditorForm({ onSuccess }: EditorFormProps) {
   const form = useForm<CreateEditorInput>({
-    resolver: zodResolver(createEditorSchema) as any,
+    resolver: zodResolver(createEditorSchema),
     defaultValues: {
       name: '',
       flatFee: 50000,
@@ -67,9 +67,12 @@ export function EditorForm({ onSuccess }: EditorFormProps) {
                   min={0}
                   disabled={createEditor.isPending}
                   aria-invalid={!!fieldState.error}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                   value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    field.onChange(value === '' ? '' : Number(value));
+                  }}
                 />
               </FormControl>
               <FormMessage />

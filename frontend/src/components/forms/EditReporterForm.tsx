@@ -19,7 +19,7 @@ interface EditReporterFormProps {
 
 export function EditReporterForm({ reporter, onSuccess }: EditReporterFormProps) {
   const form = useForm<UpdateReporterInput>({
-    resolver: zodResolver(updateReporterSchema) as any,
+    resolver: zodResolver(updateReporterSchema),
     defaultValues: {
       name: reporter.name,
       city: reporter.city,
@@ -33,7 +33,15 @@ export function EditReporterForm({ reporter, onSuccess }: EditReporterFormProps)
 
   const onSubmit = useCallback(
     (data: UpdateReporterInput) => {
-      updateReporter.mutate({ id: reporter.id, data }, { onSuccess });
+      updateReporter.mutate(
+        {
+          id: reporter.id,
+          data,
+        },
+        {
+          onSuccess,
+        }
+      );
     },
     [updateReporter, reporter.id, onSuccess]
   );
@@ -87,17 +95,25 @@ export function EditReporterForm({ reporter, onSuccess }: EditReporterFormProps)
           render={({ field, fieldState }) => (
             <FormItem>
               <FormLabel>Rate per Minute (IDR)</FormLabel>
+
               <FormControl>
                 <Input
                   type="number"
                   min={0}
                   disabled={updateReporter.isPending}
                   aria-invalid={!!fieldState.error}
-                  {...field}
-                  onChange={(e) => field.onChange(e.target.value === '' ? undefined : Number(e.target.value))}
                   value={field.value ?? ''}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    field.onChange(value === '' ? '' : Number(value));
+                  }}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  ref={field.ref}
                 />
               </FormControl>
+
               <FormMessage />
             </FormItem>
           )}
@@ -111,6 +127,7 @@ export function EditReporterForm({ reporter, onSuccess }: EditReporterFormProps)
               <FormControl>
                 <Checkbox checked={field.value} onCheckedChange={field.onChange} disabled={updateReporter.isPending} />
               </FormControl>
+
               <FormLabel className="!mt-0">Available</FormLabel>
             </FormItem>
           )}
